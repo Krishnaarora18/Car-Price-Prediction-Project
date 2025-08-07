@@ -24,3 +24,8 @@
    - Flask application with dark theme UI
    - Real-time predictions
    - Deployment is currently being debugged. Local setup works as expected. Contribution welcome!
+
+     
+### Frontend Note
+The initial version of the HTML/CSS frontend was generated with assistance from Claude sonnet 4.0(Anthropic AI). It was further customized and integrated with the Flask backend.
+
