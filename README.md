@@ -23,4 +23,3 @@
 3. **Web Deployment**
    - Flask application with dark theme UI
    - Real-time predictions
-   - Professional deployment on Railway
