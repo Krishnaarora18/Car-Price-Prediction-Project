@@ -4,8 +4,8 @@
   - Data exploration and analysis
   - Feature engineering and preprocessing
   - Model training and evaluation
-- **`data/`** - Dataset used for training the car price prediction model
-- **`app.py`** - Flask web application for price predictions
+- **`data/`** - Both Raw and Cleaned Datasets are available in the notebooks folder
+- **`flask_app.py`** - Flask web application for price predictions
 - **`templates/`** - Beautiful dark-themed HTML interface
 
 ## 🔬 Data Science Process
@@ -17,7 +17,7 @@
 
 2. **Model Development**
    - StandardScaler preprocessing
-   - One-hot encoding for 70+ car brands
+   - One-hot encoding for 35+ car brands
    - Model training and validation
 
 3. **Web Deployment**
