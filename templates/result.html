@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prediction Result - Car Price AI</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        background: #0a0a0a;
+        color: #ffffff;
+        min-height: 100vh;
+        background-image: radial-gradient(
+            circle at 30% 40%,
+            rgba(120, 255, 198, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 119, 198, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 80%,
+            rgba(120, 119, 198, 0.15) 0%,
+            transparent 50%
+          );
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(15, 15, 15, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+          0 0 0 1px rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+        animation: slideUp 0.6s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header {
+        background: linear-gradient(135deg, #1a1a1a 0%, #0d4f3c 100%);
+        color: white;
+        padding: 35px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(120, 255, 198, 0.1) 50%,
+          transparent 70%
+        );
+        animation: shimmer 3s ease-in-out infinite;
+      }
+
+      @keyframes shimmer {
+        0%,
+        100% {
+          transform: translateX(-100%);
+        }
+        50% {
+          transform: translateX(100%);
+        }
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #ffffff 0%, #78ffc6 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .price-display {
+        background: linear-gradient(135deg, #7877c6 0%, #0d4f3c 100%);
+        margin: 30px;
+        padding: 45px;
+        border-radius: 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(120, 255, 198, 0.3);
+      }
+
+      .price-display::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #7877c6, #78ffc6, #7877c6);
+        z-index: -1;
+        border-radius: 20px;
+        animation: borderGlow 2s linear infinite;
+      }
+
+      @keyframes borderGlow {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      .price-icon {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        color: #78ffc6;
+      }
+
+      .price-amount {
+        font-size: 3.5em;
+        font-weight: 900;
+        margin-bottom: 15px;
+        text-shadow: 0 0 30px rgba(120, 255, 198, 0.5);
+        background: linear-gradient(135deg, #ffffff 0%, #78ffc6 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .price-label {
+        font-size: 1.3em;
+        opacity: 0.9;
+        font-weight: 600;
+        color: #e0e0e0;
+      }
+
+      .details-container {
+        padding: 35px;
+      }
+
+      .section-title {
+        font-size: 1.5em;
+        font-weight: 700;
+        color: #78ffc6;
+        margin-bottom: 25px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 35px;
+      }
+
+      .detail-card {
+        background: rgba(255, 255, 255, 0.02);
+        padding: 25px;
+        border-radius: 15px;
+        border: 1px solid rgba(120, 255, 198, 0.2);
+        backdrop-filter: blur(5px);
+        transition: all 0.3s ease;
+      }
+
+      .detail-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(120, 255, 198, 0.4);
+        box-shadow: 0 15px 35px rgba(120, 255, 198, 0.1);
+      }
+
+      .card-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #7877c6;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .detail-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+
+      .detail-label {
+        font-weight: 600;
+        color: #b3b3b3;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .detail-value {
+        color: #78ffc6;
+        font-weight: 700;
+        font-size: 1.1em;
+      }
+
+      .actions {
+        text-align: center;
+        padding: 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 16px 32px;
+        margin: 0 12px;
+        border: none;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #7877c6 0%, #2d1b69 100%);
+        color: white;
+        border: 2px solid transparent;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #78ffc6;
+        border: 2px solid #78ffc6;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(120, 119, 198, 0.4);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(120, 255, 198, 0.1);
+        box-shadow: 0 15px 35px rgba(120, 255, 198, 0.3);
+      }
+
+      .confidence-bar {
+        background: rgba(255, 255, 255, 0.1);
+        height: 8px;
+        border-radius: 4px;
+        margin-top: 20px;
+        overflow: hidden;
+      }
+
+      .confidence-fill {
+        background: linear-gradient(90deg, #7877c6, #78ffc6);
+        height: 100%;
+        width: 85%;
+        border-radius: 4px;
+        animation: fillUp 1s ease-out 0.5s both;
+      }
+
+      @keyframes fillUp {
+        from {
+          width: 0%;
+        }
+        to {
+          width: 85%;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .price-amount {
+          font-size: 2.8em;
+        }
+
+        .details-container {
+          padding: 25px;
+        }
+
+        .btn {
+          display: block;
+          margin: 10px auto;
+          max-width: 250px;
+        }
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #78ffc6;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a0ffdd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-content">
+          <h1><i class="fas fa-check-circle"></i> Prediction Complete</h1>
+          <p>AI-powered price analysis completed successfully</p>
+        </div>
+      </div>
+
+      <div class="price-display">
+        <div class="price-icon">
+          <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="price-amount">${{ "{:,.0f}".format(prediction) }}</div>
+        <div class="price-label">Estimated Market Value</div>
+        <div class="confidence-bar">
+          <div class="confidence-fill"></div>
+        </div>
+        <p style="margin-top: 10px; color: #b3b3b3; font-size: 0.9em">
+          <i class="fas fa-chart-line"></i> 85% Prediction Confidence
+        </p>
+      </div>
+
+      <div class="details-container">
+        <h3 class="section-title">
+          <i class="fas fa-car-alt"></i> Vehicle Analysis Report
+        </h3>
+
+        <div class="details-grid">
+          <div class="detail-card">
+            <div class="card-title">
+              <i class="fas fa-info-circle"></i> Basic Information
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-building"></i> Brand
+              </span>
+              <span class="detail-value">{{ company }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-chair"></i> Seating
+              </span>
+              <span class="detail-value">{{ seats }} Seats</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-cog"></i> Engine
+              </span>
+              <span class="detail-value">{{ cc_capacity }} CC</span>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="card-title">
+              <i class="fas fa-tachometer-alt"></i> Performance Metrics
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-horse-head"></i> Power
+              </span>
+              <span class="detail-value">{{ horsepower }} HP</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-wrench"></i> Torque
+              </span>
+              <span class="detail-value">{{ torque }} Nm</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-rocket"></i> Top Speed
+              </span>
+              <span class="detail-value">{{ total_speed }} km/h</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">
+                <i class="fas fa-stopwatch"></i> 0-100 km/h
+              </span>
+              <span class="detail-value">{{ performance }}s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a href="/" class="btn btn-primary">
+          <i class="fas fa-plus-circle"></i> New Prediction
+        </a>
+        <button onclick="window.print()" class="btn btn-secondary">
+          <i class="fas fa-print"></i> Save Report
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Add smooth animations on load
+      document.addEventListener("DOMContentLoaded", function () {
+        const cards = document.querySelectorAll(".detail-card");
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.style.animation = `slideUp 0.6s ease-out ${index * 0.1}s both`;
+          }, 100);
+        });
+      });
+    </script>
+  </body>
+</html>

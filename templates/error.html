@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error - Car Price AI</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        background: #0a0a0a;
+        color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(255, 119, 119, 0.15) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 119, 198, 0.15) 0%,
+            transparent 50%
+          );
+        padding: 20px;
+      }
+
+      .error-container {
+        max-width: 600px;
+        background: rgba(15, 15, 15, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+          0 0 0 1px rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        padding: 50px;
+        text-align: center;
+        border: 2px solid rgba(255, 119, 119, 0.3);
+        animation: slideUp 0.6s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .error-icon {
+        font-size: 5em;
+        color: #ff7777;
+        margin-bottom: 25px;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      h1 {
+        font-size: 2.5em;
+        color: #ff7777;
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+
+      .error-message {
+        background: rgba(255, 119, 119, 0.1);
+        color: #ffcccc;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 119, 119, 0.3);
+        font-size: 1.1em;
+        line-height: 1.5;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #7877c6 0%, #2d1b69 100%);
+        color: white;
+        padding: 18px 35px;
+        text-decoration: none;
+        border-radius: 12px;
+        display: inline-block;
+        font-weight: 700;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(120, 119, 198, 0.4);
+      }
+
+      .support-text {
+        margin-top: 25px;
+        color: #888;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-container">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h1>Prediction Error</h1>
+      <div class="error-message">
+        <strong><i class="fas fa-bug"></i> Error Details:</strong><br />
+        {{ error }}
+      </div>
+      <a href="/" class="btn"> <i class="fas fa-arrow-left"></i> Try Again </a>
+      <div class="support-text">
+        <i class="fas fa-lightbulb"></i>
+        Make sure all fields are filled correctly and the selected brand exists
+        in our database.
+      </div>
+    </div>
+  </body>
+</html>
