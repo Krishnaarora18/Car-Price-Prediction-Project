@@ -23,3 +23,4 @@
 3. **Web Deployment**
    - Flask application with dark theme UI
    - Real-time predictions
+   - Deployment is currently being debugged. Local setup works as expected. Contribution welcome!
